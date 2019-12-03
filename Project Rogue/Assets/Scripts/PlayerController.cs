@@ -24,8 +24,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D myRigidBody2d;
 
     private bool jump = false;
+    [SerializeField]
     private bool canJump = false;
-    private bool canThrow = false;
+    //private bool canThrow = false;
 
     public Joysticks joystickType;
 
@@ -69,7 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Floor"))
         {
-            //Debug.Log("Floor found"); //BUG will detect the floor if you hit the bottom of it, i'm not sure whyt this is happening when the trigger is nowhere near the floor
+            //Debug.Log("Floor found"); //BUG will detect the floor if you hit the bottom of it, i'm not sure why this is happening when the trigger is nowhere near the floor
             canJump = true;
         }
     }
@@ -94,9 +95,10 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 myPos = transform.position;
         
-        if (inputType == "Keyboard")
+        if (inputType == "Keyboard") //we want to do the figuring for keyboard to controller elsewhere, otherwise it will need to be tracked for like every action.
         {
             //TODO: Need to change so that mouse position from player doesnt affect speed.
+            //Matt's comment: Why is that changing based on mouse position? is mousePos-myPos keeping a magnitude as well as a direction?
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = mousePos - myPos;
             GameObject thrownItem = (GameObject)Instantiate(myThrownItemPrefab, transform.position, Quaternion.identity);

@@ -8,8 +8,13 @@ public class ProjectileScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy hit");
+            EnemyHit();
         }
         Destroy(gameObject);
+    }
+
+    private void EnemyHit()
+    {
+        Debug.Log("Enemy hit");
     }
 }
