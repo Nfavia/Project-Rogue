@@ -15,12 +15,17 @@ public class PlayerController : MonoBehaviour
     private float jumpImpulse;
     [SerializeField]
     private float movementSpeed;
+    [SerializeField]
+    private float throwSpeed;
 
+    [SerializeField]
+    private GameObject myThrownItemPrefab;
 
     private Rigidbody2D myRigidBody2d;
 
     private bool jump = false;
     private bool canJump = false;
+    private bool canThrow = false;
 
     public Joysticks joystickType;
 
@@ -41,7 +46,10 @@ public class PlayerController : MonoBehaviour
         {
             //This needs to be in both here and fixed update or physics get wonky on different hardware, also if it's all in fixed theres delay in hitting the jump btn and it working
             jump = true;
-            Debug.Log("jumped");
+        }
+        if (Input.GetButtonDown(inputType + "_Throw"))
+        {
+            Throw();
         }
         Debug.Log("Can jump?: " + canJump);
     }
@@ -80,5 +88,24 @@ public class PlayerController : MonoBehaviour
         Vector2 movementVector = new Vector2(myRigidBody2d.velocity.x, jumpImpulse * Time.deltaTime * 100); // The * 100 just makes it simpler to adjust in the editor
         myRigidBody2d.velocity = movementVector;
         canJump = false;
+    }
+
+    private void Throw()
+    {
+        Vector2 myPos = transform.position;
+        
+        if (inputType == "Keyboard")
+        {
+            //TODO: Need to change so that mouse position from player doesnt affect speed.
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 direction = mousePos - myPos;
+            GameObject thrownItem = (GameObject)Instantiate(myThrownItemPrefab, transform.position, Quaternion.identity);
+            thrownItem.GetComponent<Rigidbody2D>().velocity = direction * throwSpeed;
+        }
+        else
+        {
+            //TODO: For controller
+        }
+
     }
 }
