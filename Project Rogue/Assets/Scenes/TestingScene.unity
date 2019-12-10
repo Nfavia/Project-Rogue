@@ -1802,7 +1802,7 @@ MonoBehaviour:
   - {fileID: 2050565170}
   offset: {x: 0, y: 0, z: -10}
   minZoom: 30
-  maxZoom: 1
+  maxZoom: 5
   zoomLimiter: 50
   smoothTime: 0.01
 --- !u!1 &721545640
