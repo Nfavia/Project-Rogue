@@ -4,6 +4,21 @@ using UnityEngine;
 
 public class ProjectileScript : MonoBehaviour
 {
+    [SerializeField]
+    private float despawnTime = 3f;
+    private float timer;
+
+    private void Start()
+    {
+        timer = Time.time + despawnTime;
+    }
+
+    private void Update()
+    {
+        if (Time.time >= timer)
+            Destroy(gameObject);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))

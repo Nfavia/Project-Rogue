@@ -7,6 +7,7 @@ public enum Joysticks
     Keyboard,
     Joy2
 };
+
 public class PlayerController : MonoBehaviour
 {
 
@@ -97,17 +98,24 @@ public class PlayerController : MonoBehaviour
         
         if (inputType == "Keyboard") //we want to do the figuring for keyboard to controller elsewhere, otherwise it will need to be tracked for like every action.
         {
-            //TODO: Need to change so that mouse position from player doesnt affect speed.
-            //Matt's comment: Why is that changing based on mouse position? is mousePos-myPos keeping a magnitude as well as a direction?
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = mousePos - myPos;
             GameObject thrownItem = (GameObject)Instantiate(myThrownItemPrefab, transform.position, Quaternion.identity);
-            thrownItem.GetComponent<Rigidbody2D>().velocity = direction * throwSpeed;
+            thrownItem.GetComponent<Rigidbody2D>().velocity = ClampMagnitude(direction * throwSpeed, throwSpeed, throwSpeed);
         }
         else
         {
             //TODO: For controller
         }
 
+    }
+
+    //Clamps Velocity magnitude for a Vector 2
+    public static Vector2 ClampMagnitude(Vector2 v, float max, float min)
+    {
+        double sm = v.sqrMagnitude;
+        if (sm > (double)max * (double)max) return v.normalized * max;
+        else if (sm < (double)min * (double)min) return v.normalized * min;
+        return v;
     }
 }
